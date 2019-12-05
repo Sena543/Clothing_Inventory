@@ -1,5 +1,6 @@
 package mainfile;
 
+import DB_file.Cloth_dbfile;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +15,7 @@ public class Main extends Application {
         primaryStage.setTitle("Store Name");
         primaryStage.setScene(new Scene(root, 800, 800));
         primaryStage.show();
+        new Cloth_dbfile().create_Connection();
     }
 
 

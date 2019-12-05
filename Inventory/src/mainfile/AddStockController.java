@@ -8,6 +8,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class AddStockController {
+    /*
+
+     */
     public void cancelProcess(ActionEvent event) throws Exception {
         Parent mainParent = FXMLLoader.load(getClass().getResource("../scenes/mainScene.fxml"));
         Scene mainScene = new Scene(mainParent);

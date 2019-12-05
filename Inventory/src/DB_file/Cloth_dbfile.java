@@ -6,54 +6,34 @@ public class Cloth_dbfile {
     Connection connection;
     Statement statement;
     ResultSet resultset;
+    PreparedStatement preparedStatement;
 
-    public void create_Connection(String userID, String password){
+    public  Connection create_Connection(){
+        String url = "jdbc:mysql://localhost:3306/clothing_shop";
+        String userID = "root";
+        String password = "senanu123$";
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-            String db_url = String.format("user=%s&password=%s", userID, password);
+            //Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            //String db_url = String.format("user=%s&password=%s", userID, password);
 
-            connection = DriverManager.getConnection("jdbc://localhost/Cloth_Invetory"+ db_url);
+             connection = DriverManager.getConnection(url, userID, password);
+            return connection;
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return null;
         }
     }
 
-    public ResultSet count_Clothes_Available(){
+    public void getUser(String username, String password){
+        String sql = String.format("SELECT FROM userTable WHERE username = %s", username);
         try{
-            statement = connection.createStatement();
-            resultset = statement.executeQuery("SELECT COUNT(*) FROM clothTable");
-
+            preparedStatement = connection.prepareStatement(sql);
+            resultset = statement.executeQuery(sql);
         }catch (SQLException e){
             System.out.println("Exception Message:"+ e.getMessage());
             System.out.println("Error State:"+e.getSQLState());
             System.out.println("Error Code:"+e.getErrorCode());
         }
-
-        return resultset;
-    }
-
-    //subtract from items available
-    public void item_Sold(String itemBought){
-        String sql = String.format("DELETE FROM clothTable WHERE cloth_id = %s ", itemBought);
-
-        try{
-            statement = connection.createStatement();
-            statement.executeUpdate(sql);
-        }catch (SQLException e){
-            System.out.println("Exception Message:"+ e.getMessage());
-            System.out.println("Error State:"+e.getSQLState());
-            System.out.println("Error Code:"+e.getErrorCode());
-        }
-    }
-
-    public void add_Stock(){
-        try{
-            statement = connection.createStatement();
-          //  resultset = statement.execute('');
-        }catch (SQLException e){
-            System.out.println("Exception Message:"+ e.getMessage());
-            System.out.println("Error State:"+e.getSQLState());
-            System.out.println("Error Code:"+e.getErrorCode());
-        }
+        System.out.println("Success");
     }
 }
