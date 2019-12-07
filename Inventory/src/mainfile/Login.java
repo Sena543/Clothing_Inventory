@@ -8,11 +8,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,7 +30,6 @@ public class Login implements Initializable {
     String password;
     Connection connection;
     PreparedStatement preparedStatement;
-    Statement statement;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -51,20 +48,17 @@ public class Login implements Initializable {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
             System.out.println(ex.getCause());
+            }
         }
-    }
-
-//        System.out.println(username);
-//        System.out.println(password);
     }
 
     public String handleLogin(){
         username = usernamebox.getText();
         password = passwordbox.getText();
         connection = database.create_Connection();
-        //String sql = String.format("SELECT * FROM userTable  WHERE username = %s", username);
         String sql = "SELECT * FROM userTable WHERE username = ?";
         String status = "Success";
+
         if(username.isEmpty() || password.isEmpty()){
             incorrect_label.setText("Username and Password are required");
             status = "Empty details";
@@ -84,11 +78,7 @@ public class Login implements Initializable {
                 System.out.println(ex.getMessage());
                 System.out.println(ex.getCause());
             }
-
         }
-       // database.getUser(username, password);
         return status;
     }
-
-
 }

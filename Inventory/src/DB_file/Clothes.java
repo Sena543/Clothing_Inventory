@@ -11,7 +11,7 @@ public class Clothes {
     private double price;
     private int quantity;
 
-    public Clothes(String id){
+    public Clothes(){
         this.name = "";
         this.price = 0;
         this.quantity = 1;
@@ -27,9 +27,7 @@ public class Clothes {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
     public double getPrice() {
         return price;

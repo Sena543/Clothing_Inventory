@@ -2,8 +2,6 @@ package mainfile;
 
 import DB_file.Cloth_dbfile;
 import DB_file.Clothes;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -27,8 +24,6 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     Connection connection;
     PreparedStatement preparedStatement;
-    @FXML
-    private Button add_stock_button;
     @FXML
     private TextField addToCartBox;
     @FXML
@@ -57,38 +52,19 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        cloth_nameColumn.setCellValueFactory(new PropertyValueFactory<Clothes, String>("name"));
-        cloth_quantityColumn.setCellValueFactory(new PropertyValueFactory<Clothes, Integer>("quantity"));
-        cloth_priceColumn.setCellValueFactory(new PropertyValueFactory<Clothes, Double>("price"));
+        cloth_nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        cloth_quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        cloth_priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
     }
 
+
+
+     //method gets the data from the database and adds it to the cart
      public void addItemToCart(){
-//         cloth_nameColumn.setCellValueFactory(new PropertyValueFactory<Clothes, String>("Item Name"));
-//         cloth_quantityColumn.setCellValueFactory(new PropertyValueFactory<Clothes, Integer>("Quantity"));
-//         cloth_priceColumn.setCellValueFactory(new PropertyValueFactory<Clothes, Double>("Price"));
-         //give the duplicate error
-         //   cartTable.getColumns().addAll(cloth_nameColumn, cloth_quantityColumn, cloth_priceColumn);
-
-        if(!addToCartBox.getText().isEmpty()){
-            //stop executing the function and return something
-            cartTable.setItems(getDatafromDB());
-        }
-    }
-
-
-     public ObservableList<Clothes> getItems(){
-         ObservableList<Clothes> itemList = FXCollections.observableArrayList();
-
-         return itemList;
-     }
-
-     //method gets the data from the database and passes it to
-     public ObservableList<Clothes> getDatafromDB(){
-         ObservableList<Clothes> itemList = FXCollections.observableArrayList();
-
+         Clothes addClothes = new Clothes();
          connection = cdb.create_Connection();
-         ResultSet data = null;
+         ResultSet data;
          String sqlStatement = "SELECT * FROM clothing_table WHERE name = ?";
          try {
              preparedStatement = connection.prepareStatement(sqlStatement);
@@ -96,20 +72,21 @@ public class MainController implements Initializable {
              data = preparedStatement.executeQuery();
 
              if (data.next()) {
+                 addClothes.setName(data.getString("name"));
+                 addClothes.setQuantity(data.getInt("quantity"));
+                 addClothes.setPrice((data.getDouble("price")));
                  System.out.println("ID---NAME--QUANTITY---PRICE");
-                 int id = data.getInt("id");
-                 String name = data.getString("name");
-                 int quantity = data.getInt("quantity");
-                 double price = data.getDouble("price");
-                 System.out.println(id+"---"+name+"---"+quantity+"---"+price);
-                 itemList.add(new Clothes(name,quantity, price));
+                 System.out.println(data.getInt("id")+"---"+data.getString("name")+"---"+data.getInt("quantity")+"---"+data.getDouble("price"));
 
+                 if(!addToCartBox.getText().isEmpty()){
+                     cartTable.getItems().add(addClothes);
+                     addToCartBox.clear();
+                 }
              }
          } catch (SQLException e) {
              e.getCause();
              e.getMessage();
              e.printStackTrace();
          }
-         return itemList;
     }
 }
