@@ -9,11 +9,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,13 +24,13 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     Connection connection;
     PreparedStatement preparedStatement;
-    @FXML
-    private TextField addToCartBox;
-    @FXML
-    private TableView<Clothes> cartTable;
+    @FXML Label priceSum;
+    @FXML private TextField addToCartBox;
+    @FXML private TableView<Clothes> cartTable;
     @FXML private TableColumn<Clothes, String>cloth_nameColumn;
     @FXML private TableColumn<Clothes, Integer> cloth_quantityColumn;
     @FXML private TableColumn<Clothes, Double> cloth_priceColumn;
+    @FXML private MenuItem add_stock_menu;
     Cloth_dbfile cdb = new Cloth_dbfile();
 
 
@@ -51,14 +51,34 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        cartTable.setEditable(true);
         cloth_nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        cloth_quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
+        cloth_quantityColumn.setCellValueFactory(
+                new PropertyValueFactory<>("quantity"));
+        cloth_quantityColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        cloth_quantityColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Clothes, Integer> t) -> {
+                    t.getTableView().getItems().get(
+                            t.getTablePosition().getRow()).setQuantity(t.getNewValue());
+                    priceSum.setText(String.valueOf(itemSum()));
+                });
+
         cloth_priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
     }
 
-
+    //addition method
+    public double itemSum(){
+        double total = 0;
+        double value;
+        for (int i= 0;i<cartTable.getItems().size();i++){
+            value = Double.parseDouble(String.valueOf(cartTable.getColumns().get(2).getCellObservableValue(i).getValue())) * Double.parseDouble(String.valueOf(cartTable.getColumns().get(1).getCellObservableValue(i).getValue()));
+            total = total+value;
+        }
+        System.out.println(total);
+        return total;
+    }
 
      //method gets the data from the database and adds it to the cart
      public void addItemToCart(){
@@ -73,14 +93,15 @@ public class MainController implements Initializable {
 
              if (data.next()) {
                  addClothes.setName(data.getString("name"));
-                 addClothes.setQuantity(data.getInt("quantity"));
+                 //addClothes.setQuantity(data.getInt("quantity"));
                  addClothes.setPrice((data.getDouble("price")));
                  System.out.println("ID---NAME--QUANTITY---PRICE");
                  System.out.println(data.getInt("id")+"---"+data.getString("name")+"---"+data.getInt("quantity")+"---"+data.getDouble("price"));
 
-                 if(!addToCartBox.getText().isEmpty()){
+                 if(!addToCartBox.getText().isEmpty()) {
                      cartTable.getItems().add(addClothes);
                      addToCartBox.clear();
+                     priceSum.setText(String.valueOf(itemSum()));
                  }
              }
          } catch (SQLException e) {

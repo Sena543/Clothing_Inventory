@@ -12,51 +12,56 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <AnchorPane prefHeight="723.0" prefWidth="853.0">
+      <VBox GridPane.vgrow="ALWAYS">
          <children>
-            <TextField id="addToCartBox" fx:id="addToCartBox" layoutX="105.0" layoutY="124.0" prefHeight="25.0" prefWidth="507.0" promptText="Enter Cloth Name" />
-            <Button id="sell_items" fx:id="sell_items" layoutX="493.0" layoutY="500.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="123.0" text="Sell Item(s)" />
-            <TableView id="cartTable" fx:id="cartTable" layoutX="109.0" layoutY="191.0" prefHeight="255.0" prefWidth="507.0">
-              <columns>
-                <TableColumn id="cloth_nameColumn" fx:id="cloth_nameColumn" prefWidth="178.0" text="Item Name" />
-                <TableColumn id="cloth_quantityColumn" fx:id="cloth_quantityColumn" prefWidth="165.0" text="Quantity" />
-                  <TableColumn id="cloth_priceColumn" fx:id="cloth_priceColumn" prefWidth="163.0" text="Price" />
-              </columns>
-            </TableView>
-            <Label layoutX="410.0" layoutY="446.0" prefHeight="54.0" prefWidth="99.0" text="Total Price:">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font></Label>
-            <Button id="add_to_cart_button" fx:id="add_to_cart_button" layoutX="109.0" layoutY="158.0" mnemonicParsing="false" onAction="#addItemToCart" prefHeight="25.0" prefWidth="132.0" text="Add To Cart" />
-            <Button id="remove_items" fx:id="remove_items" layoutX="109.0" layoutY="456.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="132.0" text="Remove Item(s)" />
-            <Button id="add_stock_button" fx:id="add_stock_button" layoutX="7.0" layoutY="59.0" mnemonicParsing="false" onAction="#addStockScene" prefHeight="25.0" prefWidth="114.0" text="Add Stock" />
-            <Label layoutX="518.0" layoutY="446.0" prefHeight="54.0" prefWidth="99.0">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <MenuBar layoutY="2.0">
-              <menus>
-                <Menu mnemonicParsing="false" text="Items">
-                  <items>
-                    <MenuItem id="add_stock_menu" fx:id="add_stock_menu" mnemonicParsing="false" onAction="#addStockScene" text="Add Stock" />
-                        <MenuItem mnemonicParsing="false" text="Check Inventory" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                        <MenuItem mnemonicParsing="false" text="Tutorials" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
+            <AnchorPane prefHeight="723.0" prefWidth="853.0">
+               <children>
+                  <TextField id="addToCartBox" fx:id="addToCartBox" layoutX="105.0" layoutY="124.0" prefHeight="25.0" prefWidth="507.0" promptText="Enter Cloth Name" />
+                  <Button id="sell_items" fx:id="sell_items" layoutX="493.0" layoutY="500.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="123.0" text="Sell Item(s)" />
+                  <TableView id="cartTable" fx:id="cartTable" layoutX="109.0" layoutY="191.0" prefHeight="255.0" prefWidth="507.0">
+                    <columns>
+                      <TableColumn id="cloth_nameColumn" fx:id="cloth_nameColumn" prefWidth="178.0" text="Item Name" />
+                      <TableColumn id="cloth_quantityColumn" fx:id="cloth_quantityColumn" prefWidth="165.0" text="Quantity" />
+                        <TableColumn id="cloth_priceColumn" fx:id="cloth_priceColumn" prefWidth="163.0" text="Price" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="410.0" layoutY="446.0" prefHeight="54.0" prefWidth="99.0" text="Total Price:">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Button id="add_to_cart_button" fx:id="add_to_cart_button" layoutX="109.0" layoutY="158.0" mnemonicParsing="false" onAction="#addItemToCart" prefHeight="25.0" prefWidth="132.0" text="Add To Cart" />
+                  <Button id="remove_items" fx:id="remove_items" layoutX="109.0" layoutY="456.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="132.0" text="Remove Item(s)" />
+                  <Label id="priceSum" fx:id="priceSum" layoutX="518.0" layoutY="446.0" prefHeight="54.0" prefWidth="99.0">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <MenuBar id="menu_bar" fx:id="menu_bar" layoutY="2.0">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="Items">
+                        <items>
+                          <MenuItem id="add_stock_menu" fx:id="add_stock_menu" mnemonicParsing="false" onAction="#addStockScene" text="Add Stock" />
+                              <MenuItem mnemonicParsing="false" text="Check Inventory" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Edit">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Delete" />
+                        </items>
+                      </Menu>
+                      <Menu id="help_menu" fx:id="help_menu" mnemonicParsing="false" text="Help">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="About" />
+                              <MenuItem mnemonicParsing="false" text="Tutorials" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+                  <Button id="add_stock_button" fx:id="add_stock_button" layoutX="178.0" layoutY="56.0" mnemonicParsing="false" onAction="#addStockScene" prefHeight="37.0" prefWidth="100.0" text="Add Stock" />
+               </children>
+            </AnchorPane>
          </children>
-      </AnchorPane>
+      </VBox>
    </children>
 </GridPane>
